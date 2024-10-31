@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronRight, ChevronDown, FileJson } from 'lucide-react';
 
 type JSONValue = string | number | boolean | null | JSONObject | JSONArray;
