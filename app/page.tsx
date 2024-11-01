@@ -13,7 +13,7 @@ export default function Component() {
       id: 'api',
       name: 'APIリクエスト',
       icon: <Send className="h-4 w-4" />,
-      description: '簡単にAPIリクエストを送信し、レスポンスを確認',
+      description: '簡単にAPIリクエストを送信しレスポンスを確認',
       page: <RequestPage />,
     },
     {
