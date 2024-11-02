@@ -8,37 +8,37 @@ import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
 
-const services = [
-  {
-    id: 'api',
-    name: 'APIリクエスト',
-    icon: <Send className="h-4 w-4" />,
-    description: '簡単にAPIリクエストを送信しレスポンスを確認',
-    page: <RequestPage />,
-  },
-  {
-    id: 'json',
-    name: 'JSON整形',
-    icon: <FileJson className="h-4 w-4" />,
-    description: '複雑なJSONデータを見やすく整形',
-    page: <JsonPage />,
-  },
-  {
-    id: 'dummy_data_generate',
-    name: 'ダミーデータ生成',
-    icon: <Database className="h-4 w-4" />,
-    description: '指定した形式のダミーデータを生成',
-    page: <DummyDataPage />,
-  },
-];
-
 export default function Component() {
+  const services = [
+    {
+      id: 'api',
+      name: 'APIリクエスト',
+      icon: <Send className="h-4 w-4" />,
+      description: '簡単にAPIリクエストを送信しレスポンスを確認',
+      page: <RequestPage />,
+    },
+    {
+      id: 'json',
+      name: 'JSON整形',
+      icon: <FileJson className="h-4 w-4" />,
+      description: '複雑なJSONデータを見やすく整形',
+      page: <JsonPage />,
+    },
+    {
+      id: 'dummy_data_generate',
+      name: 'ダミーデータ生成',
+      icon: <Database className="h-4 w-4" />,
+      description: '指定した形式のダミーデータを生成',
+      page: <DummyDataPage />,
+    },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="container mx-auto flex flex-grow flex-col px-4 py-8">
         <h1 className="mb-4 text-center text-3xl font-bold">サービス一覧</h1>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
-          <TabsList className={`grid w-full grid-cols-${services.length}`}>
+          <TabsList className={`grid w-full grid-cols-3`}>
             {services.map((service) => (
               <TabsTrigger key={service.id} value={service.id} className="flex items-center gap-2">
                 {service.icon}
