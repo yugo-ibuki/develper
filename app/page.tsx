@@ -7,7 +7,6 @@ import RequestPage from '@/components/pages/request';
 import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
-import { useEffect, useState } from 'react';
 
 const services = [
   {
