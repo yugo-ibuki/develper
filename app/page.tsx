@@ -34,18 +34,12 @@ const services = [
 ];
 
 export default function Component() {
-  const [serviceCount, setServiceCount] = useState<number>(0);
-
-  useEffect(() => {
-    setServiceCount(services.length);
-  }, [services]);
-
   return (
     <div className="flex min-h-screen flex-col">
       <div className="container mx-auto flex flex-grow flex-col px-4 py-8">
         <h1 className="mb-4 text-center text-3xl font-bold">サービス一覧</h1>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
-          <TabsList className={`grid w-full grid-cols-${serviceCount}`}>
+          <TabsList className={`grid w-full grid-cols-${services.length}`}>
             {services.map((service) => (
               <TabsTrigger key={service.id} value={service.id} className="flex items-center gap-2">
                 {service.icon}
