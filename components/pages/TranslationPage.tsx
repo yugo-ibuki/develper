@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Languages } from 'lucide-react';
 import TranslationResult from '@/components/TranslationResult';
 import TranslationInput from '@/components/TranslationInput';
-import { translate } from '@/app/actions/translate'; // パスは実際の構造に合わせて調整してください
+import { translate } from '@/app/actions/translate';
 
 function TranslationPage() {
   const [text, setText] = useState('');
