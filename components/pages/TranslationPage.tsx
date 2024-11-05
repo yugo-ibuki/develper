@@ -2,57 +2,26 @@ import React, { useState } from 'react';
 import { Languages } from 'lucide-react';
 import TranslationResult from '@/components/TranslationResult';
 import TranslationInput from '@/components/TranslationInput';
-import { translate } from '@/app/actions/translate';
-import { Switch } from '@/components/ui/switch';
+import { useTranslation } from '@/components/pages/hooks/TranslationPage/useTranslation';
 
 function TranslationPage() {
   const [text, setText] = useState('');
-  const [isJapanese, setIsJapanese] = useState(true);
-  const [result, setResult] = useState<{
-    provider: string;
-    result: string;
-    icon: string;
-    error?: string;
-  } | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [sourceLang, setSourceLang] = useState('Japanese');
+  const [targetLang, setTargetLang] = useState('English');
+  const { translate, results, isLoading } = useTranslation();
 
   const handleTranslate = async (text: string) => {
     if (!text.trim()) return;
+    await translate(
+      text,
+      sourceLang === 'Japanese' ? 'ja' : 'en',
+      targetLang === 'Japanese' ? 'ja' : 'en'
+    );
+  };
 
-    setIsLoading(true);
-    setResult(null);
-
-    try {
-      // isJapanese が true の場合は日本語→英語、false の場合は英語→日本語
-      const sourceLang = isJapanese ? 'ja' : 'en';
-      const targetLang = isJapanese ? 'en-US' : 'ja';
-
-      const response = await translate(text, sourceLang, targetLang);
-
-      if (response.text) {
-        setResult({
-          provider: 'DeepL',
-          result: response.text,
-          icon: '🤖',
-        });
-      } else {
-        setResult({
-          provider: 'DeepL',
-          result: '',
-          icon: '🤖',
-          error: response.error || 'Translation failed',
-        });
-      }
-    } catch (error: any) {
-      setResult({
-        provider: 'DeepL',
-        result: '',
-        icon: '🤖',
-        error: error.message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSwapLanguages = () => {
+    setSourceLang(targetLang);
+    setTargetLang(sourceLang);
   };
 
   return (
@@ -61,45 +30,35 @@ function TranslationPage() {
         <div className="mb-8 text-center">
           <div className="mb-2 flex items-center justify-center gap-2">
             <Languages className="h-8 w-8 text-indigo-600" />
-            <h1 className="text-3xl font-bold text-gray-800">DeepL Translation</h1>
+            <h1 className="text-3xl font-bold text-gray-800">AI Translation</h1>
           </div>
-          <p className="text-gray-600">Translate text using DeepL advanced AI</p>
-        </div>
-
-        <div className="mb-4 flex items-center justify-center gap-4">
-          <span className="text-gray-600">🇯🇵 日本語</span>
-          <div className="flex items-center gap-2">
-            <Switch
-              checked={isJapanese}
-              onCheckedChange={setIsJapanese}
-              className="data-[state=checked]:bg-indigo-600"
-            />
-          </div>
-          <span className="text-gray-600">🇺🇸 English</span>
+          <p className="text-gray-600">Compare translations from DeepL and Google Translate</p>
         </div>
 
         <div className="mb-6 rounded-xl bg-white p-6 shadow-lg">
-          <div className="mb-2 text-sm text-gray-500">
-            {isJapanese ? '日本語を入力してください' : 'Enter English text'}
-          </div>
           <TranslationInput
             value={text}
             onChange={setText}
             onTranslate={() => handleTranslate(text)}
             isLoading={isLoading}
-            placeholder={isJapanese ? '日本語のテキスト...' : 'English text...'}
+            sourceLang={sourceLang}
+            targetLang={targetLang}
+            onSwapLanguages={handleSwapLanguages}
           />
         </div>
 
-        {text && result && (
+        {text && results.length > 0 && (
           <div className="space-y-4">
-            <TranslationResult
-              provider={`DeepL (${isJapanese ? '日本語→英語' : 'English→日本語'})`}
-              result={result.result}
-              icon={result.icon}
-              isLoading={isLoading}
-              error={result.error}
-            />
+            {results.map((result, index) => (
+              <TranslationResult
+                key={index}
+                provider={result.provider}
+                result={result.result}
+                icon={result.icon}
+                isLoading={isLoading}
+                error={result.error}
+              />
+            ))}
           </div>
         )}
       </div>
