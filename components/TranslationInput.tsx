@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 
 interface TranslationInputProps {
@@ -20,6 +20,16 @@ function TranslationInput({
   targetLang,
   onSwapLanguages,
 }: TranslationInputProps) {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Ctrl + Enter または Command + Enter で実行
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (value.trim() && !isLoading) {
+        onTranslate();
+      }
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center gap-4">
@@ -42,8 +52,9 @@ function TranslationInput({
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onKeyDown={handleKeyDown}
           className="min-h-[200px] w-full rounded-lg border border-gray-200 p-4 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200"
-          placeholder="Enter text to translate..."
+          placeholder={`Enter text to translate... (Press ${navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'} + Enter to translate)`}
         />
         <button
           onClick={onTranslate}
