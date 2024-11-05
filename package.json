@@ -10,6 +10,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@google-cloud/translate": "^8.5.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -47,6 +48,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "deepl-node": "^1.14.0",
     "embla-carousel-react": "^8.3.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.1",

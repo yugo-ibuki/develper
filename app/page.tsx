@@ -2,11 +2,12 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, FileJson, Database } from 'lucide-react';
+import { Send, FileJson, Database, Languages } from 'lucide-react';
 import RequestPage from '@/components/pages/request';
 import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
+import TranslationPage from '@/components/pages/TranslationPage';
 
 export default function Component() {
   const services = [
@@ -31,6 +32,13 @@ export default function Component() {
       description: '指定した形式のダミーデータを生成',
       page: <DummyDataPage />,
     },
+    {
+      id: 'translation_service',
+      name: '翻訳サービス',
+      icon: <Languages className="h-4 w-4" />,
+      description: '複数翻訳サービスを使って結果を見比べることができる',
+      page: <TranslationPage />,
+    },
   ];
 
   return (
@@ -38,7 +46,7 @@ export default function Component() {
       <div className="container mx-auto flex flex-grow flex-col px-4 py-8">
         <h1 className="mb-4 text-center text-3xl font-bold">サービス一覧</h1>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
-          <TabsList className={`grid w-full grid-cols-3`}>
+          <TabsList className={`grid w-full grid-cols-4`}>
             {services.map((service) => (
               <TabsTrigger key={service.id} value={service.id} className="flex items-center gap-2">
                 {service.icon}
