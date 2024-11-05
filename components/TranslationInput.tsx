@@ -1,37 +1,41 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TranslationInputProps {
   value: string;
   onChange: (value: string) => void;
   onTranslate: () => void;
   isLoading: boolean;
+  placeholder?: string;
 }
 
-function TranslationInput({ value, onChange, onTranslate, isLoading }: TranslationInputProps) {
+function TranslationInput({
+  value,
+  onChange,
+  onTranslate,
+  isLoading,
+  placeholder = 'Enter text to translate...',
+}: TranslationInputProps) {
   return (
     <div className="space-y-4">
-      <textarea
+      <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Enter text to translate..."
-        className="h-32 w-full resize-none rounded-lg border border-gray-200 p-4 focus:border-transparent focus:ring-2 focus:ring-indigo-500"
-        disabled={isLoading}
+        placeholder={placeholder}
+        className="min-h-[120px]"
       />
-      <button
-        onClick={onTranslate}
-        disabled={!value.trim() || isLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isLoading ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Translating...
-          </>
-        ) : (
-          'Translate'
-        )}
-      </button>
+      <div className="flex justify-end">
+        <Button
+          onClick={onTranslate}
+          disabled={!value.trim() || isLoading}
+          className="bg-indigo-600 hover:bg-indigo-700"
+        >
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Translate
+        </Button>
+      </div>
     </div>
   );
 }
