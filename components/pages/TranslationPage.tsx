@@ -25,7 +25,7 @@ function TranslationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 text-center">
           <div className="mb-2 flex items-center justify-center gap-2">
