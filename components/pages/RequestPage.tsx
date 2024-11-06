@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, Play, Plus, Trash2 } from 'lucide-react';
+import { Copy, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,38 +16,17 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-
-interface Header {
-  key: string;
-  value: string;
-}
+import KeyValueEditor from '@/components/KeyValueEditor';
+import { KeyValuePair } from '@/components/KeyValueEditor';
 
 export default function RequestPage() {
   const [url, setUrl] = useState('');
   const [method, setMethod] = useState('GET');
-  const [headers, setHeaders] = useState<Header[]>([{ key: '', value: '' }]);
+  const [headers, setHeaders] = useState<KeyValuePair[]>([{ key: '', value: '' }]);
+  const [bodyParams, setBodyParams] = useState<KeyValuePair[]>([{ key: '', value: '' }]);
   const [apiKey, setApiKey] = useState('');
   const [response, setResponse] = useState('');
   const { toast } = useToast();
-
-  const addHeader = () => {
-    setHeaders([...headers, { key: '', value: '' }]);
-  };
-
-  const removeHeader = (index: number) => {
-    const newHeaders = headers.filter((_, i) => i !== index);
-    setHeaders(newHeaders);
-  };
-
-  const updateHeader = (index: number, field: 'key' | 'value', value: string) => {
-    const newHeaders = headers.map((header, i) => {
-      if (i === index) {
-        return { ...header, [field]: value };
-      }
-      return header;
-    });
-    setHeaders(newHeaders);
-  };
 
   const copyToClipboard = async () => {
     try {
@@ -73,16 +52,26 @@ export default function RequestPage() {
       });
       if (apiKey) headerObj['Authorization'] = `Bearer ${apiKey}`;
 
+      const bodyObj: Record<string, string> = {};
+      if (method !== 'GET') {
+        bodyParams.forEach(({ key, value }) => {
+          if (key && value) bodyObj[key] = value;
+        });
+      }
+
+      const requestData = {
+        url,
+        method,
+        headers: headerObj,
+        ...(method !== 'GET' && Object.keys(bodyObj).length > 0 && { body: bodyObj }),
+      };
+
       const res = await fetch('/api/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          url,
-          method,
-          headers: headerObj,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       const data = await res.json();
@@ -117,36 +106,22 @@ export default function RequestPage() {
                   <SelectContent>
                     <SelectItem value="GET">GET</SelectItem>
                     <SelectItem value="POST">POST</SelectItem>
+                    <SelectItem value="PUT">PUT</SelectItem>
+                    <SelectItem value="PATCH">PATCH</SelectItem>
+                    <SelectItem value="DELETE">DELETE</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label>Headers</Label>
-                <div className="space-y-2">
-                  {headers.map((header, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        placeholder="Key"
-                        value={header.key}
-                        onChange={(e) => updateHeader(index, 'key', e.target.value)}
-                      />
-                      <Input
-                        placeholder="Value"
-                        value={header.value}
-                        onChange={(e) => updateHeader(index, 'value', e.target.value)}
-                      />
-                      <Button variant="ghost" size="icon" onClick={() => removeHeader(index)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button variant="outline" onClick={addHeader} className="w-full">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Header
-                  </Button>
-                </div>
-              </div>
+              <KeyValueEditor title="Headers" items={headers} setItems={setHeaders} />
+
+              {method !== 'GET' && (
+                <KeyValueEditor
+                  title="Body Parameters"
+                  items={bodyParams}
+                  setItems={setBodyParams}
+                />
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="apiKey">API Key</Label>

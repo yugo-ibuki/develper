@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, FileJson, Database, Languages } from 'lucide-react';
-import RequestPage from '@/components/pages/request';
+import RequestPage from '@/components/pages/RequestPage';
 import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';

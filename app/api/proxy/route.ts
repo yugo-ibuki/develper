@@ -3,13 +3,21 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { url, method, headers } = body;
+    const { url, method, headers, body: requestBody } = body;
+    console.log(body);
 
-    const response = await fetch(url, {
+    const fetchOptions: RequestInit = {
       method,
       headers,
-    });
+    };
 
+    // POSTリクエストでbodyがある場合のみ追加
+    if (method === 'POST' && requestBody) {
+      fetchOptions.body =
+        typeof requestBody === 'string' ? requestBody : JSON.stringify(requestBody);
+    }
+
+    const response = await fetch(url, fetchOptions);
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
