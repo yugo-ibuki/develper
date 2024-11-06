@@ -16,8 +16,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import KeyValueEditor from '@/components/KeyValueEditor';
-import { KeyValuePair } from '@/components/KeyValueEditor';
+import { KeyValueEditor, KeyValuePair } from '@/components/KeyValueEditor';
 
 export default function RequestPage() {
   const [url, setUrl] = useState('');

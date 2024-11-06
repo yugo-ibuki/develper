@@ -4,7 +4,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { url, method, headers, body: requestBody } = body;
-    console.log(body);
 
     const fetchOptions: RequestInit = {
       method,

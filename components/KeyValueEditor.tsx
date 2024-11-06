@@ -16,7 +16,7 @@ interface KeyValueEditorProps {
   setItems: (items: KeyValuePair[]) => void;
 }
 
-export default function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) {
+export function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) {
   const addKeyValuePair = () => {
     setItems([...items, { key: '', value: '' }]);
   };
