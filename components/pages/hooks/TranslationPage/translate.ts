@@ -1,13 +1,10 @@
 'use server';
 
 import * as deepl from 'deepl-node';
-import { Translate } from '@google-cloud/translate/build/src/v2';
+import fetch from 'node-fetch';
 import { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
 
 const deeplTranslator = new deepl.Translator(process.env.DEEPL_API_KEY || '');
-const googleTranslate = new Translate({
-  apiKey: process.env.GOOGLE_CLOUD_API_KEY,
-});
 
 interface TranslationResult {
   text: string | null;
@@ -59,7 +56,7 @@ export async function translateWithGoogle(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
     return {
       text: data.data.translations[0].translatedText,
     };
