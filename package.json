@@ -77,5 +77,8 @@
     "@types/uuid": "^9.0.8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12"
+  },
+  "volta": {
+    "node": "20.9.0"
   }
 }
