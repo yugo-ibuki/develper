@@ -9,7 +9,6 @@ function TranslationPage() {
   const [sourceLang, setSourceLang] = useState('Japanese');
   const [targetLang, setTargetLang] = useState('English');
   const { translations, translate, createTranslation, results, isLoading } = useTranslation();
-  console.log(translations);
 
   const handleTranslate = async (text: string) => {
     if (!text.trim()) return;
