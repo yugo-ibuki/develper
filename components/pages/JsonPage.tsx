@@ -1,10 +1,26 @@
 import { useState } from 'react';
-import { FileJson } from 'lucide-react';
+import { FileJson, ChevronDown, ChevronUp } from 'lucide-react';
 import { TreeNode } from '@/components/TreeNode';
 import { JSONValue } from '@/types';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+
+// JSONオブジェクトのすべてのパスを取得する関数
+function getAllPaths(obj: JSONValue, currentPath: string[] = []): string[] {
+  const paths: string[] = [];
+
+  if (obj && typeof obj === 'object') {
+    paths.push(currentPath.join('.'));
+
+    Object.entries(obj).forEach(([key, value]) => {
+      paths.push(...getAllPaths(value, [...currentPath, key]));
+    });
+  }
+
+  return paths;
+}
 
 function JsonPage() {
   const [jsonInput, setJsonInput] = useState(
@@ -41,6 +57,17 @@ function JsonPage() {
   const handleSelect = (path: string[], value: JSONValue) => {
     setSelectedPath(path);
     setSelectedValue(value);
+  };
+
+  const handleExpandAll = () => {
+    if (parsedJson) {
+      const allPaths = getAllPaths(parsedJson);
+      setExpanded(new Set(allPaths));
+    }
+  };
+
+  const handleCollapseAll = () => {
+    setExpanded(new Set());
   };
 
   return (
@@ -81,8 +108,28 @@ function JsonPage() {
             <ResizablePanel defaultSize={60}>
               <Card className="h-full">
                 <div className="flex h-full flex-col">
-                  <div className="p-4">
+                  <div className="flex items-center justify-between p-4">
                     <h2 className="text-lg font-semibold">Structure Explorer</h2>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleExpandAll}
+                        disabled={!parsedJson}
+                      >
+                        <ChevronDown className="mr-1 h-4 w-4" />
+                        Expand All
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCollapseAll}
+                        disabled={!parsedJson}
+                      >
+                        <ChevronUp className="mr-1 h-4 w-4" />
+                        Collapse All
+                      </Button>
+                    </div>
                   </div>
                   <ScrollArea className="flex-1">
                     <div className="space-y-4 p-4 pt-0">
