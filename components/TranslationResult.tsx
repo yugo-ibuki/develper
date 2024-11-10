@@ -39,6 +39,7 @@ function TranslationResult({ provider, result, icon, isLoading, error }: Transla
           </button>
         )}
       </div>
+
       <div className="relative min-h-[100px] rounded-lg bg-gray-50 p-4">
         {isLoading ? (
           <div className="absolute inset-0 flex items-center justify-center">

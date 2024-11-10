@@ -10,12 +10,14 @@
     "format": "prettier --write .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit push",
-    "db:drop": "drizzle-kit drop"
+    "db:drop": "drizzle-kit drop",
+    "db:reset": "bun db:drop && bun db:migrate"
   },
   "dependencies": {
     "@google-cloud/translate": "^8.5.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/swc-wasm-nodejs": "13.5.1",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -45,6 +47,7 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@supabase/supabase-js": "^2.46.1",
     "@types/node": "20.6.2",
+    "@types/pg": "^8.11.10",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
@@ -76,6 +79,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "uuid": "^9.0.1",
+    "uuidv7": "^1.0.2",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
   },

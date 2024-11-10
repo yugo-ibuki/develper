@@ -8,7 +8,8 @@ function TranslationPage() {
   const [text, setText] = useState('');
   const [sourceLang, setSourceLang] = useState('Japanese');
   const [targetLang, setTargetLang] = useState('English');
-  const { translate, results, isLoading } = useTranslation();
+  const { translations, translate, createTranslation, results, isLoading } = useTranslation();
+  console.log(translations);
 
   const handleTranslate = async (text: string) => {
     if (!text.trim()) return;
@@ -24,8 +25,27 @@ function TranslationPage() {
     setTargetLang(sourceLang);
   };
 
+  const handleSaveTranslation = async (
+    sourceText: string,
+    googleTranslation: string,
+    deeplTranslation: string
+  ) => {
+    if (!sourceText?.trim()) return;
+
+    const result = await createTranslation(sourceText, {
+      googleTranslation,
+      deeplTranslation,
+    });
+
+    if (result.error) {
+      // エラーハンドリング
+      console.error(result.error);
+      // 必要に応じてユーザーに通知
+    }
+  };
+
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 text-center">
           <div className="mb-2 flex items-center justify-center gap-2">
@@ -47,18 +67,39 @@ function TranslationPage() {
           />
         </div>
 
-        {text && results.length > 0 && (
+        {text && translations && (
           <div className="space-y-4">
-            {results.map((result, index) => (
-              <TranslationResult
-                key={index}
-                provider={result.provider}
-                result={result.result}
-                icon={result.icon}
-                isLoading={isLoading}
-                error={result.error}
-              />
-            ))}
+            <TranslationResult
+              provider="Google Translate"
+              result={results.google.translatedText}
+              icon="🌐"
+              isLoading={isLoading}
+              error={results.google.error}
+            />
+            <TranslationResult
+              provider="DeepL"
+              result={results.deepl.translatedText}
+              icon="🤖"
+              isLoading={isLoading}
+              error={results.deepl.error}
+            />
+
+            {/* 保存ボタン - 両方の翻訳が成功した場合のみ表示 */}
+            {!results.google.error && !results.deepl.error && (
+              <button
+                onClick={() =>
+                  handleSaveTranslation(
+                    text,
+                    results.google.translatedText,
+                    results.deepl.translatedText
+                  )
+                }
+                className="mt-4 w-full rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white transition-colors hover:bg-indigo-700 disabled:bg-gray-300"
+                disabled={isLoading}
+              >
+                Save Both Translations
+              </button>
+            )}
           </div>
         )}
       </div>
