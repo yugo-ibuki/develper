@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { FileJson, ChevronDown, ChevronUp } from 'lucide-react';
+import { FileJson, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { TreeNode } from '@/components/TreeNode';
 import { JSONValue } from '@/types';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-// JSONオブジェクトのすべてのパスを取得する関数
 function getAllPaths(obj: JSONValue, currentPath: string[] = []): string[] {
   const paths: string[] = [];
 
@@ -22,6 +22,42 @@ function getAllPaths(obj: JSONValue, currentPath: string[] = []): string[] {
   return paths;
 }
 
+function findPathsContainingKey(
+  obj: JSONValue,
+  searchKey: string,
+  currentPath: string[] = [],
+  results: { path: string[]; fullKey: string }[] = []
+): { path: string[]; fullKey: string }[] {
+  if (!obj || typeof obj !== 'object') return results;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    const newPath = [...currentPath, key];
+    if (key.toLowerCase().includes(searchKey.toLowerCase())) {
+      results.push({
+        path: newPath,
+        fullKey: newPath.join(' → '),
+      });
+    }
+    if (value && typeof value === 'object') {
+      findPathsContainingKey(value, searchKey, newPath, results);
+    }
+  });
+
+  return results;
+}
+
+function getAllParentPaths(path: string[]): string[] {
+  const parentPaths: string[] = [];
+  let currentPath: string[] = [];
+
+  path.forEach((segment) => {
+    currentPath.push(segment);
+    parentPaths.push(currentPath.join('.'));
+  });
+
+  return parentPaths;
+}
+
 function JsonPage() {
   const [jsonInput, setJsonInput] = useState(
     '{\n  "example": {\n    "nested": {\n      "value": 42,\n      "array": [1, 2, 3]\n    }\n  }\n}'
@@ -31,6 +67,8 @@ function JsonPage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedPath, setSelectedPath] = useState<string[]>([]);
   const [selectedValue, setSelectedValue] = useState<JSONValue | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<{ path: string[]; fullKey: string }[]>([]);
 
   const handleJsonInput = (value: string) => {
     setJsonInput(value);
@@ -68,6 +106,34 @@ function JsonPage() {
 
   const handleCollapseAll = () => {
     setExpanded(new Set());
+  };
+
+  const expandToPath = (path: string[]) => {
+    const parentPaths = getAllParentPaths(path);
+    const newExpanded = new Set(expanded);
+    parentPaths.forEach((path) => newExpanded.add(path));
+    setExpanded(newExpanded);
+  };
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+
+    if (!parsedJson || !term.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const results = findPathsContainingKey(parsedJson, term.trim());
+    setSearchResults(results);
+
+    // 最初の結果までのパスを自動展開
+    if (results.length > 0) {
+      expandToPath(results[0].path);
+      handleSelect(
+        results[0].path,
+        results[0].path.reduce((obj: any, key) => obj[key], parsedJson)
+      );
+    }
   };
 
   return (
@@ -108,29 +174,62 @@ function JsonPage() {
             <ResizablePanel defaultSize={60}>
               <Card className="h-full">
                 <div className="flex h-full flex-col">
-                  <div className="flex items-center justify-between p-4">
-                    <h2 className="text-lg font-semibold">Structure Explorer</h2>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleExpandAll}
-                        disabled={!parsedJson}
-                      >
-                        <ChevronDown className="mr-1 h-4 w-4" />
-                        Expand All
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleCollapseAll}
-                        disabled={!parsedJson}
-                      >
-                        <ChevronUp className="mr-1 h-4 w-4" />
-                        Collapse All
-                      </Button>
+                  <div className="space-y-4 p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <h2 className="text-lg font-semibold">Structure Explorer</h2>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleExpandAll}
+                          disabled={!parsedJson}
+                        >
+                          <ChevronDown className="mr-1 h-4 w-4" />
+                          Expand All
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleCollapseAll}
+                          disabled={!parsedJson}
+                        >
+                          <ChevronUp className="mr-1 h-4 w-4" />
+                          Collapse All
+                        </Button>
+                      </div>
                     </div>
+
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <Input
+                        className="pl-9"
+                        placeholder="Search keys..."
+                        value={searchTerm}
+                        onChange={(e) => handleSearch(e.target.value)}
+                      />
+                    </div>
+
+                    {searchResults.length > 0 && (
+                      <div className="max-h-32 space-y-1 overflow-auto rounded-lg border bg-gray-50 p-2">
+                        {searchResults.map((result, index) => (
+                          <button
+                            key={index}
+                            className="w-full rounded px-2 py-1 text-left text-sm hover:bg-gray-100"
+                            onClick={() => {
+                              expandToPath(result.path);
+                              handleSelect(
+                                result.path,
+                                result.path.reduce((obj: any, key) => obj[key], parsedJson)
+                              );
+                            }}
+                          >
+                            {result.fullKey}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
                   <ScrollArea className="flex-1">
                     <div className="space-y-4 p-4 pt-0">
                       <div className="rounded-lg border p-4">
