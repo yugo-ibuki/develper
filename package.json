@@ -9,7 +9,8 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx migration.ts"
+    "db:migrate": "drizzle-kit push",
+    "db:drop": "drizzle-kit drop"
   },
   "dependencies": {
     "@google-cloud/translate": "^8.5.0",
