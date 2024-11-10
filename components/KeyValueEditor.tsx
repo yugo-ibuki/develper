@@ -1,9 +1,18 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Clipboard } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 export interface KeyValuePair {
   key: string;
@@ -17,6 +26,9 @@ interface KeyValueEditorProps {
 }
 
 export function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) {
+  const [jsonInput, setJsonInput] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const addKeyValuePair = () => {
     setItems([...items, { key: '', value: '' }]);
   };
@@ -38,9 +50,69 @@ export function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) 
     setItems(newItems);
   };
 
+  const handleJsonPaste = () => {
+    try {
+      const parsedJson = JSON.parse(jsonInput);
+      const newItems: KeyValuePair[] = [];
+
+      // Handle both object and array formats
+      if (Array.isArray(parsedJson)) {
+        parsedJson.forEach((item) => {
+          if (typeof item === 'object' && item !== null) {
+            Object.entries(item).forEach(([key, value]) => {
+              newItems.push({
+                key: key,
+                value: typeof value === 'object' ? JSON.stringify(value) : String(value),
+              });
+            });
+          }
+        });
+      } else if (typeof parsedJson === 'object' && parsedJson !== null) {
+        Object.entries(parsedJson).forEach(([key, value]) => {
+          newItems.push({
+            key: key,
+            value: typeof value === 'object' ? JSON.stringify(value) : String(value),
+          });
+        });
+      }
+
+      setItems(newItems.length > 0 ? newItems : [{ key: '', value: '' }]);
+      setJsonInput('');
+      setIsDialogOpen(false);
+    } catch (error) {
+      alert('Invalid JSON format. Please check your input.');
+    }
+  };
+
   return (
     <div className="space-y-2">
-      <Label>{title}</Label>
+      <div className="flex items-center justify-between">
+        <Label>{title}</Label>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Clipboard className="mr-2 h-4 w-4" />
+              Paste JSON
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Paste JSON</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <Textarea
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+                placeholder="Paste your JSON here..."
+                className="min-h-[200px]"
+              />
+              <Button onClick={handleJsonPaste} className="w-full">
+                Convert to Key-Value Pairs
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
       <div className="space-y-2">
         {items.map((item, index) => (
           <div key={index} className="flex gap-2">
@@ -67,3 +139,5 @@ export function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) 
     </div>
   );
 }
+
+export default KeyValueEditor;
