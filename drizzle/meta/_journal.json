@@ -5,8 +5,50 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1731222049359,
-      "tag": "0000_translation-table",
+      "when": 1731242915290,
+      "tag": "0000_magical_shatterstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1731243241313,
+      "tag": "0001_groovy_husk",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731244094218,
+      "tag": "0002_far_scarecrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1731244352104,
+      "tag": "0003_noisy_dorian_gray",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1731244831353,
+      "tag": "0004_parched_marvex",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1731244859303,
+      "tag": "0005_add-translationtable",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1731244879921,
+      "tag": "0006_add-translation-table",
       "breakpoints": true
     }
   ]
