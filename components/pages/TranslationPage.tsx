@@ -66,7 +66,7 @@ function TranslationPage() {
           />
         </div>
 
-        {text && translations && (
+        {text && results.deepl.translatedText !== '' && results.google.translatedText !== '' && (
           <div className="space-y-4">
             <TranslationResult
               provider="Google Translate"
