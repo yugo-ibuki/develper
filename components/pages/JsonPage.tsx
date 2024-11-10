@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { FileJson } from 'lucide-react';
 import { TreeNode } from '@/components/TreeNode';
 import { JSONValue } from '@/types';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 function JsonPage() {
   const [jsonInput, setJsonInput] = useState(
@@ -41,59 +44,85 @@ function JsonPage() {
   };
 
   return (
-    <div className="flex flex-col bg-gray-50">
-      <main className="flex-grow p-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-6 flex items-center gap-2">
+    <div className="flex h-screen flex-col bg-gray-50">
+      <div className="p-4">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="mb-4 flex items-center gap-2">
             <FileJson className="h-8 w-8 text-blue-600" />
             <h1 className="text-2xl font-bold text-gray-800">JSON Explorer</h1>
           </div>
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold">JSON Input</h2>
-              <textarea
-                className="h-64 w-full rounded-lg border p-4 font-mono text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                value={jsonInput}
-                onChange={(e) => handleJsonInput(e.target.value)}
-                placeholder="Paste your JSON here..."
-              />
-              {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
-            </div>
-
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold">Structure Explorer</h2>
-              <div className="h-64 overflow-auto rounded-lg border p-4">
-                {parsedJson ? (
-                  <TreeNode
-                    data={parsedJson}
-                    path={[]}
-                    onSelect={handleSelect}
-                    expanded={expanded}
-                    onToggle={handleToggle}
-                  />
-                ) : (
-                  <div className="italic text-gray-500">
-                    Enter valid JSON to explore its structure
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {selectedValue !== null && (
-            <div className="mt-6 rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold">Selected Value</h2>
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="mb-2 text-sm text-gray-600">Path: {selectedPath.join(' → ')}</p>
-                <pre className="overflow-auto rounded-lg bg-gray-100 p-4">
-                  {JSON.stringify(selectedValue, null, 2)}
-                </pre>
-              </div>
-            </div>
-          )}
         </div>
-      </main>
+      </div>
+
+      <div className="flex-1 overflow-hidden p-4">
+        <div className="mx-auto h-full max-w-[1400px]">
+          <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg bg-background">
+            <ResizablePanel defaultSize={40} minSize={30}>
+              <Card className="h-full">
+                <div className="flex h-full flex-col">
+                  <div className="p-4">
+                    <h2 className="text-lg font-semibold">JSON Input</h2>
+                  </div>
+                  <div className="flex-1 p-4 pt-0">
+                    <textarea
+                      className="h-full w-full rounded-lg border p-4 font-mono text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                      value={jsonInput}
+                      onChange={(e) => handleJsonInput(e.target.value)}
+                      placeholder="Paste your JSON here..."
+                    />
+                    {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
+                  </div>
+                </div>
+              </Card>
+            </ResizablePanel>
+
+            <ResizableHandle />
+
+            <ResizablePanel defaultSize={60}>
+              <Card className="h-full">
+                <div className="flex h-full flex-col">
+                  <div className="p-4">
+                    <h2 className="text-lg font-semibold">Structure Explorer</h2>
+                  </div>
+                  <ScrollArea className="flex-1">
+                    <div className="space-y-4 p-4 pt-0">
+                      <div className="rounded-lg border p-4">
+                        {parsedJson ? (
+                          <TreeNode
+                            data={parsedJson}
+                            path={[]}
+                            onSelect={handleSelect}
+                            expanded={expanded}
+                            onToggle={handleToggle}
+                          />
+                        ) : (
+                          <div className="italic text-gray-500">
+                            Enter valid JSON to explore its structure
+                          </div>
+                        )}
+                      </div>
+
+                      {selectedValue !== null && (
+                        <div className="rounded-lg border p-4">
+                          <h3 className="mb-4 text-sm font-semibold">Selected Value</h3>
+                          <div className="rounded-lg bg-gray-50 p-4">
+                            <p className="mb-2 text-sm text-gray-600">
+                              Path: {selectedPath.join(' → ')}
+                            </p>
+                            <pre className="overflow-auto rounded-lg bg-gray-100 p-4 text-sm">
+                              {JSON.stringify(selectedValue, null, 2)}
+                            </pre>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </Card>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+      </div>
     </div>
   );
 }
