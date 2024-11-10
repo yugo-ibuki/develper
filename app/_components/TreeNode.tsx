@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronRight, ChevronDown } from 'lucide-react';
-import { JSONValue } from '../types';
+import { JSONValue } from '@/types';
 
 interface TreeNodeProps {
   data: JSONValue;
