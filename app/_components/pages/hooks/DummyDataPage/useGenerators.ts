@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { GeneratorConfig } from '@/types';
-import { lastNames, firstNames } from '@/data/names';
+import { lastNames, firstNames } from '@/assets/data/names';
 
 export const useGenerators = () => {
   const generators: GeneratorConfig[] = [
