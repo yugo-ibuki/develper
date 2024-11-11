@@ -34,7 +34,7 @@ export function useTranslations(limit = 10) {
       const { data, error } = await supabase
         .from('translations')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('createdAt', { ascending: false })
         .limit(limit);
 
       if (error) throw error;
