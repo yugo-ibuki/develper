@@ -3,7 +3,7 @@ import { Languages } from 'lucide-react';
 import TranslationResult from '@/components/TranslationResult';
 import TranslationInput from '@/components/TranslationInput';
 import { useTranslation } from '@/components/pages/hooks/TranslationPage/useTranslation';
-import TranslationHistoryModal from '@/components/TranslationHistoryModal';
+import { TranslationHistoryModal } from '@/components/TranslationHistoryModal';
 
 function TranslationPage() {
   const [text, setText] = useState('');
@@ -52,7 +52,7 @@ function TranslationPage() {
             <Languages className="h-8 w-8 text-indigo-600" />
             <h1 className="text-3xl font-bold text-gray-800">AI Translation</h1>
           </div>
-          <TranslationHistoryModal />
+          <TranslationHistoryModal translations={translations} />
         </div>
 
         <div className="mb-6 rounded-xl bg-white p-6 shadow-lg">
