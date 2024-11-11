@@ -3,6 +3,7 @@ import { Languages } from 'lucide-react';
 import TranslationResult from '@/components/TranslationResult';
 import TranslationInput from '@/components/TranslationInput';
 import { useTranslation } from '@/components/pages/hooks/TranslationPage/useTranslation';
+import TranslationHistoryModal from '@/components/TranslationHistoryModal';
 
 function TranslationPage() {
   const [text, setText] = useState('');
@@ -46,12 +47,12 @@ function TranslationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
       <div className="mx-auto max-w-4xl">
-        <div className="mb-8 text-center">
-          <div className="mb-2 flex items-center justify-center gap-2">
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-2">
             <Languages className="h-8 w-8 text-indigo-600" />
             <h1 className="text-3xl font-bold text-gray-800">AI Translation</h1>
           </div>
-          <p className="text-gray-600">Compare translations from DeepL and Google Translate</p>
+          <TranslationHistoryModal />
         </div>
 
         <div className="mb-6 rounded-xl bg-white p-6 shadow-lg">
