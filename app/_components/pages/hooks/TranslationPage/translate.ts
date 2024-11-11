@@ -3,8 +3,9 @@
 import * as deepl from 'deepl-node';
 import fetch from 'node-fetch';
 import { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
+import { env } from '@/configs/env';
 
-const deeplTranslator = new deepl.Translator(process.env.DEEPL_API_KEY || '');
+const deeplTranslator = new deepl.Translator(env.DEEPL_API_KEY);
 
 interface TranslationResult {
   text: string | null;
