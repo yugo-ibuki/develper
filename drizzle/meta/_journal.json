@@ -50,6 +50,20 @@
       "when": 1731244879921,
       "tag": "0006_add-translation-table",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1731340457031,
+      "tag": "0007_heavy_zarda",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1731340489416,
+      "tag": "0008_users-table",
+      "breakpoints": true
     }
   ]
 }
