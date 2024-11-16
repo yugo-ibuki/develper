@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
+import { firstNames, lastNames } from '@/assets/data/names';
 import type { GeneratorConfig } from '@/types';
-import { lastNames, firstNames } from '@/assets/data/names';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useGenerators = () => {
   const generators: GeneratorConfig[] = [
@@ -30,7 +30,7 @@ export const useGenerators = () => {
       ],
       generate: ({ numberCount, numberDigits }) =>
         Array.from({ length: numberCount }, () => {
-          const number = Math.floor(Math.random() * Math.pow(10, numberDigits));
+          const number = Math.floor(Math.random() * 10 ** numberDigits);
           return number.toString().padStart(numberDigits, '0');
         }),
     },

@@ -1,15 +1,15 @@
 'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, FileJson, Database, Languages, LogOut } from 'lucide-react';
-import RequestPage from '@/components/pages/RequestPage';
-import JsonPage from '@/components/pages/JsonPage';
-import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
+import DummyDataPage from '@/components/pages/DummyDataPage';
+import JsonPage from '@/components/pages/JsonPage';
+import RequestPage from '@/components/pages/RequestPage';
 import TranslationPage from '@/components/pages/TranslationPage';
 import { Button } from '@/components/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/providers/AuthProvider';
+import { Database, FileJson, Languages, LogOut, Send } from 'lucide-react';
 
 export default function Component() {
   const { signOut, user } = useAuth();
@@ -66,7 +66,7 @@ export default function Component() {
           )}
         </div>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
-          <TabsList className={`grid w-full grid-cols-4`}>
+          <TabsList className="grid w-full grid-cols-4">
             {services.map((service) => (
               <TabsTrigger key={service.id} value={service.id} className="flex items-center gap-2">
                 {service.icon}

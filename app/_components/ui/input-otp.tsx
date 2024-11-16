@@ -1,8 +1,8 @@
 'use client';
 
-import * as React from 'react';
 import { OTPInput, OTPInputContext } from 'input-otp';
 import { Dot } from 'lucide-react';
+import * as React from 'react';
 
 import { cn } from '@/libs/utils';
 
@@ -62,6 +62,7 @@ const InputOTPSeparator = React.forwardRef<
   React.ElementRef<'div'>,
   React.ComponentPropsWithoutRef<'div'>
 >(({ ...props }, ref) => (
+  // biome-ignore lint: any to error is fine
   <div ref={ref} role="separator" {...props}>
     <Dot />
   </div>

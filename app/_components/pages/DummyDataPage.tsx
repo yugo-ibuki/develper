@@ -1,13 +1,13 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/toaster';
+import { GeneratedDataCard } from '@/components/GeneratedDataCard';
+import { NumberInput } from '@/components/NumberInput';
+import { useClipboard } from '@/components/pages/hooks/DummyDataPage/useClipboard';
+import { useDummyData } from '@/components/pages/hooks/DummyDataPage/useDummyData';
 import { useFormValidation } from '@/components/pages/hooks/DummyDataPage/useFormValidation';
 import { useGenerators } from '@/components/pages/hooks/DummyDataPage/useGenerators';
-import { useDummyData } from '@/components/pages/hooks/DummyDataPage/useDummyData';
-import { useClipboard } from '@/components/pages/hooks/DummyDataPage/useClipboard';
-import { NumberInput } from '@/components/NumberInput';
-import { GeneratedDataCard } from '@/components/GeneratedDataCard';
+import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/toaster';
 
 const INITIAL_FORM_DATA = {
   uuidCount: '1',

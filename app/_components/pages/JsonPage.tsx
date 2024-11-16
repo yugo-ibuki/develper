@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { FileJson, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { TreeNode } from '@/components/TreeNode';
-import { JSONValue } from '@/types';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import type { JSONValue } from '@/types';
+import { ChevronDown, ChevronUp, FileJson, Search } from 'lucide-react';
+import { useState } from 'react';
 
 function getAllPaths(obj: JSONValue, currentPath: string[] = []): string[] {
   const paths: string[] = [];
@@ -48,7 +48,7 @@ function findPathsContainingKey(
 
 function getAllParentPaths(path: string[]): string[] {
   const parentPaths: string[] = [];
-  let currentPath: string[] = [];
+  const currentPath: string[] = [];
 
   path.forEach((segment) => {
     currentPath.push(segment);
@@ -131,6 +131,7 @@ function JsonPage() {
       expandToPath(results[0].path);
       handleSelect(
         results[0].path,
+        // biome-ignore lint: any to error is fine
         results[0].path.reduce((obj: any, key) => obj[key], parsedJson)
       );
     }
@@ -213,12 +214,13 @@ function JsonPage() {
                       <div className="max-h-32 space-y-1 overflow-auto rounded-lg border bg-gray-50 p-2">
                         {searchResults.map((result, index) => (
                           <button
-                            key={index}
+                            key={index.toString()}
                             className="w-full rounded px-2 py-1 text-left text-sm hover:bg-gray-100"
                             onClick={() => {
                               expandToPath(result.path);
                               handleSelect(
                                 result.path,
+                                // biome-ignore lint: any to error is fine
                                 result.path.reduce((obj: any, key) => obj[key], parsedJson)
                               );
                             }}

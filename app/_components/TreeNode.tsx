@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronRight, ChevronDown } from 'lucide-react';
-import { JSONValue } from '@/types';
+import type { JSONValue } from '@/types';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface TreeNodeProps {
   data: JSONValue;
@@ -35,7 +35,7 @@ export function TreeNode({ data, path, onSelect, expanded, onToggle }: TreeNodeP
           <div className="ml-4">
             {data.map((item, index) => (
               <TreeNode
-                key={index}
+                key={index.toString()}
                 data={item}
                 path={[...path, index.toString()]}
                 onSelect={onSelect}

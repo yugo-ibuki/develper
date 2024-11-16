@@ -1,9 +1,10 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuth } from '@/app/_providers/AuthProvider';
 import { useToast } from '@/app/_hooks/use-toast';
+import { useAuth } from '@/app/_providers/AuthProvider';
+import { useRouter, useSearchParams } from 'next/navigation';
+import type React from 'react';
+import { Suspense, useState } from 'react';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -48,8 +49,11 @@ function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -59,8 +63,11 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

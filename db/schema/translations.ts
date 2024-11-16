@@ -1,5 +1,5 @@
-import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
+import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 // メインの translations テーブル
 export const translations = pgTable('translations', {

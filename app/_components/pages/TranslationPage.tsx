@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Languages } from 'lucide-react';
-import TranslationResult from '@/components/TranslationResult';
-import TranslationInput from '@/components/TranslationInput';
-import { useTranslation } from '@/components/pages/hooks/TranslationPage/useTranslation';
 import { TranslationHistoryModal } from '@/components/TranslationHistoryModal';
+import TranslationInput from '@/components/TranslationInput';
+import TranslationResult from '@/components/TranslationResult';
+import { useTranslation } from '@/components/pages/hooks/TranslationPage/useTranslation';
+import { Languages } from 'lucide-react';
+import React, { useState } from 'react';
 
 function TranslationPage() {
   const [text, setText] = useState('');

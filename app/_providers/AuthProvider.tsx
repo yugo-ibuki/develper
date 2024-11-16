@@ -1,13 +1,15 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Session, User } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import type { Session, User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
+import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  // biome-ignore lint: any to error is fine
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  // biome-ignore lint: any to error is fine
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }

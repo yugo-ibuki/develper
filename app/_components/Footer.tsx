@@ -1,5 +1,5 @@
-import { Github, Globe } from 'lucide-react';
 import { CreatorLink } from '@/components/CreatorLink';
+import { Github, Globe } from 'lucide-react';
 
 export function Footer() {
   return (

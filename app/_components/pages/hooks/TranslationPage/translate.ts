@@ -1,9 +1,9 @@
 'use server';
 
-import * as deepl from 'deepl-node';
-import fetch from 'node-fetch';
-import { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
 import { env } from '@/configs/env';
+import * as deepl from 'deepl-node';
+import type { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
+import fetch from 'node-fetch';
 
 const deeplTranslator = new deepl.Translator(env.DEEPL_API_KEY);
 
@@ -33,8 +33,8 @@ export async function translateWithDeepL(
 
 export async function translateWithGoogle(
   text: string,
-  sourceLang: string = 'ja',
-  targetLang: string = 'en'
+  sourceLang = 'ja',
+  targetLang = 'en'
 ): Promise<TranslationResult> {
   try {
     const url = 'https://translation.googleapis.com/language/translate/v2';
@@ -57,6 +57,7 @@ export async function translateWithGoogle(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    // biome-ignore lint: any to error is fine
     const data: any = await response.json();
     return {
       text: data.data.translations[0].translatedText,
