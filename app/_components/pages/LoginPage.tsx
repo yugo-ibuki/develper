@@ -41,7 +41,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 max-w-lg">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
         <h2 className="mb-6 text-center text-2xl font-bold">
           {isSignUp ? 'Create Account' : 'Welcome Back'}
@@ -86,6 +86,7 @@ function LoginForm() {
 
         <div className="mt-4 text-center">
           <button
+            type="button"
             onClick={() => setIsSignUp(!isSignUp)}
             className="text-sm text-indigo-600 hover:text-indigo-500"
           >
