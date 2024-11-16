@@ -2,14 +2,18 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, FileJson, Database, Languages } from 'lucide-react';
+import { Send, FileJson, Database, Languages, LogOut } from 'lucide-react';
 import RequestPage from '@/components/pages/RequestPage';
 import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
 import TranslationPage from '@/components/pages/TranslationPage';
+import { Button } from './_components/ui';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function Component() {
+  const { signOut, user } = useAuth();
+
   const services = [
     {
       id: 'api',
@@ -45,6 +49,22 @@ export default function Component() {
     <div className="flex min-h-screen flex-col">
       <div className="container mx-auto flex flex-grow flex-col px-4 py-8">
         <h1 className="mb-4 text-center text-3xl font-bold">サービス一覧</h1>
+        <div className="flex items-center gap-4">
+          {user && (
+            <>
+              <span className="text-sm text-gray-600">{user.email}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => signOut()}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                ログアウト
+              </Button>
+            </>
+          )}
+        </div>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
           <TabsList className={`grid w-full grid-cols-4`}>
             {services.map((service) => (
