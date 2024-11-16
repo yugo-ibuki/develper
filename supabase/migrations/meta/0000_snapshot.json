@@ -41,12 +41,8 @@
           "name": "deepl_translations_translationId_translations_id_fk",
           "tableFrom": "deepl_translations",
           "tableTo": "translations",
-          "columnsFrom": [
-            "translationId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["translationId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -94,12 +90,8 @@
           "name": "google_translations_translationId_translations_id_fk",
           "tableFrom": "google_translations",
           "tableTo": "translations",
-          "columnsFrom": [
-            "translationId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["translationId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -205,12 +197,8 @@
           "name": "profiles_userId_users_id_fk",
           "tableFrom": "profiles",
           "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -266,16 +254,12 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_authId_unique": {
           "name": "users_authId_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "authId"
-          ]
+          "columns": ["authId"]
         }
       },
       "policies": {},

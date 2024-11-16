@@ -1,9 +1,10 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuth } from '@/app/_providers/AuthProvider';
 import { useToast } from '@/app/_hooks/use-toast';
+import { useAuth } from '@/app/_providers/AuthProvider';
+import { useRouter, useSearchParams } from 'next/navigation';
+import type React from 'react';
+import { Suspense, useState } from 'react';
 
 function LoginForm() {
   const [email, setEmail] = useState('');

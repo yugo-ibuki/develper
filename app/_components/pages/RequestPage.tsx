@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { Copy, Play } from 'lucide-react';
+import { KeyValueEditor, type KeyValuePair } from '@/components/KeyValueEditor';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -12,11 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { KeyValueEditor, KeyValuePair } from '@/components/KeyValueEditor';
+import { Copy, Play } from 'lucide-react';
+import { useState } from 'react';
 
 export default function RequestPage() {
   const [url, setUrl] = useState('');

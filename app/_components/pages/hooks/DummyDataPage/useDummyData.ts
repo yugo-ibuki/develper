@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import type { GeneratorType, GeneratorConfig } from '@/types';
+import type { GeneratorConfig, GeneratorType } from '@/types';
+import { useCallback, useState } from 'react';
 
 export const useDummyData = (formData: Record<string, string>) => {
   const [generatedData, setGeneratedData] = useState<Record<GeneratorType, string[]>>({
@@ -13,7 +13,7 @@ export const useDummyData = (formData: Record<string, string>) => {
     (generator: GeneratorConfig) => {
       const params = generator.fields.reduce(
         (acc, field) => {
-          acc[field.id] = parseInt(formData[field.id]);
+          acc[field.id] = Number.parseInt(formData[field.id]);
           return acc;
         },
         {} as Record<string, number>

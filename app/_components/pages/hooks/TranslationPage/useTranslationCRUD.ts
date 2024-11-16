@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { supabase } from '@/configs/supabase';
-import { type Translation, type NewTranslation } from '@/db/schema';
+import type { NewTranslation, Translation } from '@/db/schema';
+import { useEffect, useState } from 'react';
 
 interface TranslationResult {
   data: {

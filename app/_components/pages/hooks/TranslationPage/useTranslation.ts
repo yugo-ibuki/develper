@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import {
   translateWithDeepL,
   translateWithGoogle,
 } from '@/components/pages/hooks/TranslationPage/translate';
-import { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
 import { useTranslations } from '@/components/pages/hooks/TranslationPage/useTranslationCRUD';
+import type { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
+import { useState } from 'react';
 
 interface TranslationResults {
   google: {
@@ -39,11 +39,7 @@ export const useTranslation = () => {
   const [results, setResults] = useState<TranslationResults>(initialResults);
   const [isLoading, setIsLoading] = useState(false);
 
-  const translateWithProviders = async (
-    text: string,
-    sourceLang: string = 'ja',
-    targetLang: string = 'en'
-  ) => {
+  const translateWithProviders = async (text: string, sourceLang = 'ja', targetLang = 'en') => {
     setIsLoading(true);
     setResults(initialResults);
 

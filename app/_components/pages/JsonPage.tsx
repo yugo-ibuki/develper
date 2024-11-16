@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { FileJson, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { TreeNode } from '@/components/TreeNode';
-import { JSONValue } from '@/types';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import type { JSONValue } from '@/types';
+import { ChevronDown, ChevronUp, FileJson, Search } from 'lucide-react';
+import { useState } from 'react';
 
 function getAllPaths(obj: JSONValue, currentPath: string[] = []): string[] {
   const paths: string[] = [];
@@ -48,7 +48,7 @@ function findPathsContainingKey(
 
 function getAllParentPaths(path: string[]): string[] {
   const parentPaths: string[] = [];
-  let currentPath: string[] = [];
+  const currentPath: string[] = [];
 
   path.forEach((segment) => {
     currentPath.push(segment);

@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
-import { Clock, Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Translation } from '@/db/schema';
+import { Check, Clock, Copy } from 'lucide-react';
+import React, { type FC } from 'react';
 
 type Props = {
   translations: Translation[];

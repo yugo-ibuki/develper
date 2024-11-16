@@ -1,5 +1,5 @@
-import React, { KeyboardEvent } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
+import React, { type KeyboardEvent } from 'react';
 
 interface TranslationInputProps {
   value: string;

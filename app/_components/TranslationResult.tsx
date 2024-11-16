@@ -1,5 +1,5 @@
+import { AlertCircle, Check, ClipboardCopy, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
-import { ClipboardCopy, Check, Loader2, AlertCircle } from 'lucide-react';
 
 interface TranslationResultProps {
   provider: string;
