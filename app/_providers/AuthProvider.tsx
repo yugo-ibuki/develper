@@ -1,21 +1,11 @@
-'use client';
-
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from '@/configs/supabase';
-import {
-  createUser,
-  getUserByAuthId,
-  type User as DbUser,
-} from '@/components/pages/hooks/Users/user';
-
-interface User {
-  id: string;
-  email?: string;
-  dbUser?: DbUser;
-}
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Session, User } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string) => Promise<{ error: any }>;
@@ -24,107 +14,74 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const loadDbUser = async (authUser: User) => {
-    try {
-      const dbUser = await getUserByAuthId(authUser.id);
-      return {
-        ...authUser,
-        dbUser,
-      };
-    } catch (error) {
-      console.error('Error loading user data:', error);
-      return authUser;
-    }
-  };
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        const enrichedUser = await loadDbUser(session.user);
-        setUser(enrichedUser);
-      } else {
-        setUser(null);
-      }
+    const setData = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+      if (error) throw error;
+      setSession(session);
+      setUser(session?.user ?? null);
       setLoading(false);
-    });
+    };
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        const enrichedUser = await loadDbUser(session.user);
-        setUser(enrichedUser);
-      } else {
-        setUser(null);
-      }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    setData();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase.auth]);
 
   const signUp = async (email: string, password: string) => {
-    try {
-      const { data, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (authError) throw authError;
-
-      if (data.user) {
-        const { user: dbUser } = await createUser({
-          authId: data.user.id,
-          email: data.user.email!,
-        });
-
-        setUser({
-          ...data.user,
-          dbUser,
-        });
-      }
-
-      return { error: null };
-    } catch (error: any) {
-      console.error('Signup error:', error);
-      return { error };
-    }
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    try {
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) throw authError;
-
-      if (data.user) {
-        const enrichedUser = await loadDbUser(data.user);
-        setUser(enrichedUser);
-      }
-
-      return { error: null };
-    } catch (error: any) {
-      console.error('Signin error:', error);
-      return { error };
-    }
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
   };
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setUser(null);
+    router.push('/login');
   };
 
-  return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = {
+    session,
+    user,
+    loading,
+    signIn,
+    signUp,
+    signOut,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
