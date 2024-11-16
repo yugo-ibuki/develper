@@ -30,7 +30,7 @@ export const useGenerators = () => {
       ],
       generate: ({ numberCount, numberDigits }) =>
         Array.from({ length: numberCount }, () => {
-          const number = Math.floor(Math.random() * Math.pow(10, numberDigits));
+          const number = Math.floor(Math.random() * 10 ** numberDigits);
           return number.toString().padStart(numberDigits, '0');
         }),
     },

@@ -35,7 +35,7 @@ export function TreeNode({ data, path, onSelect, expanded, onToggle }: TreeNodeP
           <div className="ml-4">
             {data.map((item, index) => (
               <TreeNode
-                key={index}
+                key={index.toString()}
                 data={item}
                 path={[...path, index.toString()]}
                 onSelect={onSelect}

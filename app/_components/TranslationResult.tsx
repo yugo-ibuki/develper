@@ -27,6 +27,7 @@ function TranslationResult({ provider, result, icon, isLoading, error }: Transla
         </div>
         {!isLoading && result && !error && (
           <button
+            type="button"
             onClick={handleCopy}
             className="rounded-full p-2 text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
             title="Copy translation"

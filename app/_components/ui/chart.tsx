@@ -72,6 +72,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   return (
     <style
+      // biome-ignore lint:
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(

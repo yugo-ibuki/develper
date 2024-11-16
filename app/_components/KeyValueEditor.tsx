@@ -115,7 +115,7 @@ export function KeyValueEditor({ title, items, setItems }: KeyValueEditorProps) 
       </div>
       <div className="space-y-2">
         {items.map((item, index) => (
-          <div key={index} className="flex gap-2">
+          <div key={index.toString()} className="flex gap-2">
             <Input
               placeholder="Key"
               value={item.key}

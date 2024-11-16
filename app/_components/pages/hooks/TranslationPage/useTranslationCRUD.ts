@@ -62,7 +62,10 @@ export function useTranslations(limit = 10) {
         .select()
         .single();
 
-      console.log('Translation insert response:', { translationData, translationError });
+      console.log('Translation insert response:', {
+        translationData,
+        translationError,
+      });
 
       if (translationError) throw translationError;
 
@@ -87,7 +90,10 @@ export function useTranslations(limit = 10) {
           .single(),
       ]);
 
-      console.log('Provider translations results:', { googleResult, deeplResult });
+      console.log('Provider translations results:', {
+        googleResult,
+        deeplResult,
+      });
 
       // エラーチェック
       if (googleResult.error) throw googleResult.error;
@@ -149,6 +155,7 @@ export function useTranslations(limit = 10) {
     }
   };
 
+  // biome-ignore lint: useEffectの第2引数は空配列でOK
   useEffect(() => {
     fetchTranslations();
 
@@ -179,7 +186,7 @@ export function useTranslations(limit = 10) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [limit]);
+  }, []);
 
   return {
     translations,

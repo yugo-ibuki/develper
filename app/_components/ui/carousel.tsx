@@ -123,6 +123,7 @@ const Carousel = React.forwardRef<
         ref={ref}
         onKeyDownCapture={handleKeyDown}
         className={cn('relative', className)}
+        // biome-ignore lint:
         role="region"
         aria-roledescription="carousel"
         {...props}

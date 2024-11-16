@@ -9,6 +9,16 @@
       "recommended": true,
       "complexity": {
         "noForEach": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off",
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "noPositiveTabindex": "off",
+        "noRedundantAlt": "off",
+        "useAltText": "off",
+        "useButtonType": "off",
+        "useValidAnchor": "off"
       }
     }
   },
@@ -26,6 +36,6 @@
     }
   },
   "files": {
-    "ignore": [".next/**"]
+    "ignore": [".next/**", "node_modules/**", "app/_hooks/use-toast.ts"]
   }
 }

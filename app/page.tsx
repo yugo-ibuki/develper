@@ -66,7 +66,7 @@ export default function Component() {
           )}
         </div>
         <Tabs defaultValue="api" className="flex w-full flex-grow flex-col">
-          <TabsList className={`grid w-full grid-cols-4`}>
+          <TabsList className="grid w-full grid-cols-4">
             {services.map((service) => (
               <TabsTrigger key={service.id} value={service.id} className="flex items-center gap-2">
                 {service.icon}

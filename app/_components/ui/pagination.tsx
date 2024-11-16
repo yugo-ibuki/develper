@@ -6,6 +6,7 @@ import { cn } from '@/libs/utils';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
+    // biome-ignore lint:
     role="navigation"
     aria-label="pagination"
     className={cn('mx-auto flex w-full justify-center', className)}

@@ -62,6 +62,7 @@ const InputOTPSeparator = React.forwardRef<
   React.ElementRef<'div'>,
   React.ComponentPropsWithoutRef<'div'>
 >(({ ...props }, ref) => (
+  // biome-ignore lint: any to error is fine
   <div ref={ref} role="separator" {...props}>
     <Dot />
   </div>

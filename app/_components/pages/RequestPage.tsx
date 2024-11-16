@@ -49,7 +49,7 @@ export default function RequestPage() {
       headers.forEach(({ key, value }) => {
         if (key && value) headerObj[key] = value;
       });
-      if (apiKey) headerObj['Authorization'] = `Bearer ${apiKey}`;
+      if (apiKey) headerObj.Authorization = `Bearer ${apiKey}`;
 
       const bodyObj: Record<string, string> = {};
       if (method !== 'GET') {

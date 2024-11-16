@@ -19,7 +19,7 @@ export const GeneratedDataCard: FC<GeneratedDataCardProps> = ({ title, items, on
       </CardHeader>
       <CardContent>
         {items.map((item, index) => (
-          <div key={index} className="mb-2 flex items-center justify-between">
+          <div key={index.toString()} className="mb-2 flex items-center justify-between">
             <span>{item}</span>
             <Button
               size="sm"
