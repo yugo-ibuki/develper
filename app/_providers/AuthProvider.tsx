@@ -7,7 +7,9 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  // biome-ignore lint: any to error is fine
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  // biome-ignore lint: any to error is fine
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }

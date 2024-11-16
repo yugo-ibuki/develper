@@ -66,6 +66,7 @@ export const useTranslation = () => {
       };
 
       setResults(newResults);
+      // biome-ignore lint: any to error is fine
     } catch (error: any) {
       setResults({
         deepl: {

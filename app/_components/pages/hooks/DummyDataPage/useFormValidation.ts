@@ -8,7 +8,7 @@ export const useFormValidation = (initialValues: FormData) => {
   const validateInput = useCallback((value: string) => {
     const numValue = Number.parseInt(value);
     if (value === '') return 'この項目は必須です';
-    if (isNaN(numValue)) return '数値を入力してください';
+    if (Number.isNaN(numValue)) return '数値を入力してください';
     if (numValue < 1 || numValue > 100) return '1から100の間の数値を入力してください';
     return '';
   }, []);

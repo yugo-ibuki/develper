@@ -131,6 +131,7 @@ function JsonPage() {
       expandToPath(results[0].path);
       handleSelect(
         results[0].path,
+        // biome-ignore lint: any to error is fine
         results[0].path.reduce((obj: any, key) => obj[key], parsedJson)
       );
     }
@@ -213,12 +214,13 @@ function JsonPage() {
                       <div className="max-h-32 space-y-1 overflow-auto rounded-lg border bg-gray-50 p-2">
                         {searchResults.map((result, index) => (
                           <button
-                            key={index}
+                            key={index.toString()}
                             className="w-full rounded px-2 py-1 text-left text-sm hover:bg-gray-100"
                             onClick={() => {
                               expandToPath(result.path);
                               handleSelect(
                                 result.path,
+                                // biome-ignore lint: any to error is fine
                                 result.path.reduce((obj: any, key) => obj[key], parsedJson)
                               );
                             }}

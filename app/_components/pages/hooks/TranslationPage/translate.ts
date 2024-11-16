@@ -57,6 +57,7 @@ export async function translateWithGoogle(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    // biome-ignore lint: any to error is fine
     const data: any = await response.json();
     return {
       text: data.data.translations[0].translatedText,
