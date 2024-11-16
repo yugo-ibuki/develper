@@ -3,8 +3,9 @@
 import * as deepl from 'deepl-node';
 import fetch from 'node-fetch';
 import { SourceLanguageCode, TargetLanguageCode } from 'deepl-node/dist/types';
+import { env } from '@/configs/env';
 
-const deeplTranslator = new deepl.Translator(process.env.DEEPL_API_KEY || '');
+const deeplTranslator = new deepl.Translator(env.DEEPL_API_KEY);
 
 interface TranslationResult {
   text: string | null;
@@ -37,7 +38,7 @@ export async function translateWithGoogle(
 ): Promise<TranslationResult> {
   try {
     const url = 'https://translation.googleapis.com/language/translate/v2';
-    const apiKey = process.env.GOOGLE_CLOUD_API_KEY;
+    const apiKey = env.GOOGLE_CLOUD_API_KEY;
 
     const response = await fetch(`${url}?key=${apiKey}`, {
       method: 'POST',
