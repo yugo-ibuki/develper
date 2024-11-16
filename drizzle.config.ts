@@ -6,7 +6,7 @@ export default {
   out: './supabase/migrations',
   dialect: 'postgresql',
   dbCredentials: {
-    url: env.DATABASE_URL!,
+    url: env.DATABASE_URL,
   },
   verbose: true,
   strict: true,
