@@ -38,7 +38,7 @@ export async function translateWithGoogle(
 ): Promise<TranslationResult> {
   try {
     const url = 'https://translation.googleapis.com/language/translate/v2';
-    const apiKey = process.env.GOOGLE_CLOUD_API_KEY;
+    const apiKey = env.GOOGLE_CLOUD_API_KEY;
 
     const response = await fetch(`${url}?key=${apiKey}`, {
       method: 'POST',

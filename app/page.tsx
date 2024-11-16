@@ -8,7 +8,7 @@ import JsonPage from '@/components/pages/JsonPage';
 import DummyDataPage from '@/components/pages/DummyDataPage';
 import { Footer } from '@/components/Footer';
 import TranslationPage from '@/components/pages/TranslationPage';
-import { Button } from './_components/ui';
+import { Button } from '@/components/ui';
 import { useAuth } from '@/providers/AuthProvider';
 
 export default function Component() {
