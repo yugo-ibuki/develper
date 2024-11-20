@@ -1,7 +1,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { type ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 interface AuthContextType {
   user: User | null;
@@ -14,6 +14,13 @@ interface AuthContextType {
   signOut: () => Promise<void>;
 }
 
+interface DBUser {
+  id: string;
+  email: string;
+  created_at: string;
+  auth_id: string;
+}
+
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -23,6 +30,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const supabase = createClientComponentClient();
 
+  const upsertDBUser = useCallback(
+    async (authUser: User) => {
+      const { error } = await supabase
+        .from('users')
+        .upsert(
+          {
+            email: authUser.email,
+            auth_id: authUser.id,
+            updated_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'auth_id',
+          }
+        )
+        .select();
+
+      if (error) {
+        console.error('Error upserting user:', error);
+      }
+    },
+    [supabase]
+  );
+
   useEffect(() => {
     const setData = async () => {
       const {
@@ -30,6 +60,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         error,
       } = await supabase.auth.getSession();
       if (error) throw error;
+
+      if (session?.user) {
+        await upsertDBUser(session.user);
+      }
+
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -37,7 +72,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        await upsertDBUser(session.user);
+      }
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -48,24 +86,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase.auth]);
+  }, [supabase.auth, upsertDBUser]);
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
+
+    if (!error && data.user) {
+      await upsertDBUser(data.user);
+    }
+
     return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (!error && data.user) {
+      await upsertDBUser(data.user);
+    }
+
     return { error };
   };
 
