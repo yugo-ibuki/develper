@@ -1,5 +1,6 @@
 import './globals.css';
 import { Providers } from '@/app/Providers';
+import NavigationHeader from '@/components/NavigationHeader';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -10,11 +11,18 @@ export const metadata: Metadata = {
   description: 'Helper for all developers',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <NavigationHeader />
+          {children}
+        </body>
       </Providers>
     </html>
   );
